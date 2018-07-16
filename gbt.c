@@ -5,6 +5,7 @@ unsigned char drawing_space[8][8];
 
 void draw_boxes();
 void print_help();
+void textbox(int startx, int starty, int w, int h);
 
 int main()
 {
@@ -171,18 +172,11 @@ void draw_boxes()
 {
         attron(COLOR_PAIR(4));
         clear();
+
         printw("\n         Very Tiny GameBoy Tile Editor\n\n");
         printw("         [ ] [ ] [ ] [ ]     Hex Data:\n");
-        printw("         +----------------+  +-------+\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         |                |  |       |\n");
-        printw("         +----------------+  +-------+\n");
+	textbox(9,4,16,8);
+	textbox(29,4,7,8);
 }
 
 void print_help()
@@ -205,4 +199,33 @@ void print_help()
 	while (getch() != ' ') ;
 	clear();
 	draw_boxes();
+}
+
+void textbox(int startx, int starty, int w, int h)
+{
+	int i;
+
+	attron(COLOR_PAIR(4));
+	move(starty,startx);
+	addch('+');
+	move(starty+h+1, startx);
+	addch('+');
+	for (i = 1; i < w+1; i++)
+	{
+		move(starty,startx+i);
+		addch('-');
+		move(starty+h+1,startx+i);
+		addch('-');
+	
+	}
+	mvaddch(starty,startx+w+1, '+');
+	mvaddch(starty+h+1,startx+w+1,'+');
+	
+	for (i = 1; i < h+1; i++)
+	{
+		move(starty+i, startx);
+		addch('|');
+		move(starty+i, startx+w+1);
+		addch('|');
+	}
 }
