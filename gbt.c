@@ -1,45 +1,52 @@
+/*
+	Copyright (C) 2018 Paul Arutyunov
+*/
+
+
 #include <stdio.h>
 #include <ncurses.h>
+#include "def.h"
+#include "idraw.h"
+#include "str.h"
 
-unsigned char drawing_space[8][8];
+unsigned char drawing_space[MAXH][MAXW];
+unsigned char asset[256][16];
+int h,w;
 
-void draw_boxes();
-void print_help();
-void textbox(int startx, int starty, int w, int h);
+void initColors();
 
 int main()
 {
-	extern unsigned char drawing_space[8][8];
+	extern unsigned char drawing_space[MAXH][MAXW];
+	extern char command[];
 	int k;
 	int color;
+	extern int display_guide;
 	int i;
 	int j;
-	MEVENT event;
+	int l;
+	extern int h, w;
 	unsigned char b1,b2;
+	int current_tile=0;
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
+	h = 8;
+	w = 8;
 
 	initscr();
 	if (has_colors() == FALSE) {
 		endwin();
 		printf("\nYour terminal does not support color. Life is dull without color, how can you live without it?");
 		printf("\nTerminating :(\n");
-		return 0;
+		return 1;
 	}
 	noecho();
 	start_color();
 	keypad(stdscr, 1);
-	mousemask(BUTTON1_PRESSED | REPORT_MOUSE_POSITION, NULL);
 	curs_set(0);
-	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
-	init_pair(3, COLOR_WHITE, COLOR_GREEN);
-	init_pair(4, COLOR_WHITE, COLOR_BLACK);
-
-	init_color(COLOR_YELLOW, 150,650,400);
-	init_color(COLOR_GREEN, 200,400,250);
-	init_color(COLOR_BLACK, 100,200,150);
+	initColors();
+	display_guide=0;
 
 	color = 3;
 
@@ -47,17 +54,9 @@ int main()
 	
 	while(1)
 	{
-		for (i = 0; i < 8; i++)
-		{
-			for (j = 0; j < 8; j++)
-			{
-				attron(COLOR_PAIR(drawing_space[i][j]+1));
-				move(5+i,10+j*2);
-				printw("  ");
-			}
-		}
+		displayCanvas();
 		
-		for (i = 0; i < 4; i++) 
+		for (i = 0; i < 4; i++) /* Display color panel */
 		{
 			attron(COLOR_PAIR(i+1)); 
 			move(3,10+i*4);
@@ -72,24 +71,32 @@ int main()
 		}
 
 		/* Display hex data */
-		for (i = 0; i < 8; i++)
+		for (i = 0; i < h; i++)
 		{
-			b1 = 0;
-			b2 = 0;
-			for (j = 0; j < 8; j++)
+			for (l = 0; l < w/8; l++)
 			{
-				a = drawing_space[i][j];
-				b1 = b1 | ( (a>>1) << (7-j) );
-				b2 = b2 | ( (a&1) << (7-j) );
+				b1 = 0;
+				b2 = 0;
+				for (j = 0; j < 8; j++)
+				{
+					a = drawing_space[i][j+l*8];
+					b1 = b1 | ( (a>>1) << (7-j) );
+					b2 = b2 | ( (a&1) << (7-j) );
+				}
+				move(5+i,14+w*2+l*8);
+				printw("%.2X, %.2X",b1,b2);
+				/*asset[current_tile][i] = b1;
+				asset[current_tile][i]= b2;*/
 			}
-			move(5+i,30);
-			printw("%.2X, %.2X",b1,b2);
 		}
 		
-		x = x%8;
-		y = y%8;
+		x = x%w;
+		y = y%h;
 		move(5+y,10+x*2);
-		attron(COLOR_PAIR(drawing_space[y][x]+1));	/* Change color to prevent cursor hiding the pixel */
+		
+		/*Change color to prevent the cursor
+		 * from hiding the pixel underneath */
+		attron(COLOR_PAIR(drawing_space[y][x]+1));
 		printw("[]");
 		k = getch();
 
@@ -111,30 +118,30 @@ int main()
 			 x++;
 			 break;
 
-			case ' ':
+			case ' ':	/* Plot */
 			 drawing_space[y][x] = color;
 			 break;
 
-			case 'r':
+			case 'r':	/* Redraw */
 			 clear();
 			 draw_boxes();
 			 break;
 
-			case 'h':
+			case 'h':	/* Help */
 			 clear();
 			 print_help();
 			 break;
 
-			case 'f':
-			 for (i = 0; i<8; i++) for (j = 0; j<8; j++) 
+			case 'f':	/* Fill the whole tile with one
+					   color (NOT flood fill)*/
+			 for (i = 0; i<h; i++) for (j = 0; j<w; j++) 
 						drawing_space[i][j] = color;
 			 break;
-			 
+
 			case 'q':
-			 clear();
 			 curs_set(1);
 			 attron(COLOR_PAIR(1));
-			 move(5,10);
+			 move(h+7,9);
 			 printw("Do you really want to quit? Y/N ");
 			
 			 if (getch() == 'y') {
@@ -147,13 +154,46 @@ int main()
 			 }
 			 break;
 
-			case KEY_MOUSE:		/* Mess up mith mouse (DOESN'T WORK!) */ 
-			 if (getmouse(&event) == OK)
-			 {
-			 	x = (event.x%8)-9;
-			 	y = (event.y%8)-4;
-				if (event.bstate & BUTTON1_PRESSED) drawing_space[y][x] = color;
+			case 'g':	/* Show guide */
+			 if (!display_guide)
+			  display_guide = 1;
+			 else
+			  display_guide = 0;
+			 break;
+
+			case '\n':
+			 move(h+7,9);
+			 attron(COLOR_PAIR(4));
+			 printw("> ");
+			 get_input_line(command);
+			break;
+
+			case 'S':
+			 move(h+7,9);
+			 attron(COLOR_PAIR(2));
+			 printw("Height: %d, Width: %d - use arrow keys to change\n         Press Shift-S when finished",h,w);
+			 curs_set(1);
+
+			 while ((k=getch())!='S') {
+				if (k==KEY_DOWN) h+=8;
+				if (k==KEY_UP && h>8) h-=8;
+				if (k==KEY_RIGHT) w+=8;
+				if (k==KEY_LEFT && w>8) w-=8;
+				clear();
+			 	move(h+7,9);
+			 	attron(COLOR_PAIR(2));
+			 	printw("Height: %d, Width: %d - use arrow keys to change",h,w);
+			 	attron(COLOR_PAIR(4));
+			 	move(h+8,9);
+			 	attron(COLOR_PAIR(2));
+			 	printw("Press Shift+S again when finished");
+				draw_boxes();
+				displayCanvas();
 			 }
+
+			 curs_set(0);
+			 clear();
+			 draw_boxes();
 			 break;
 
 			default: 
@@ -168,64 +208,14 @@ int main()
 	return 0;
 }
 
-void draw_boxes()
+void initColors()
 {
-        attron(COLOR_PAIR(4));
-        clear();
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(3, COLOR_WHITE, COLOR_GREEN);
+	init_pair(4, COLOR_WHITE, COLOR_BLACK);
 
-        printw("\n         Very Tiny GameBoy Tile Editor\n\n");
-        printw("         [ ] [ ] [ ] [ ]     Hex Data:\n");
-	textbox(9,4,16,8);
-	textbox(29,4,7,8);
-}
-
-void print_help()
-{
-	attron(COLOR_PAIR(4));
-	printw("\n\n\n");
-	printw("         +-------- Help Message -----+\n");
-	printw("         | Here's the list of cmds:  |\n");
-        printw("         |                           |\n");
-        printw("         | 1...4    = pick color     |\n");
-        printw("         | ARROWS   = move cursor    |\n");
-        printw("         | SPACE    = draw           |\n");
-        printw("         | r        = redraw screen  |\n");
-	printw("         | f        = fill with color|\n");
-        printw("         | h        = get some help  |\n");
-        printw("         | q        = quit           |\n");
-        printw("         +--press space to continue--+\n");
-
-
-	while (getch() != ' ') ;
-	clear();
-	draw_boxes();
-}
-
-void textbox(int startx, int starty, int w, int h)
-{
-	int i;
-
-	attron(COLOR_PAIR(4));
-	move(starty,startx);
-	addch('+');
-	move(starty+h+1, startx);
-	addch('+');
-	for (i = 1; i < w+1; i++)
-	{
-		move(starty,startx+i);
-		addch('-');
-		move(starty+h+1,startx+i);
-		addch('-');
-	
-	}
-	mvaddch(starty,startx+w+1, '+');
-	mvaddch(starty+h+1,startx+w+1,'+');
-	
-	for (i = 1; i < h+1; i++)
-	{
-		move(starty+i, startx);
-		addch('|');
-		move(starty+i, startx+w+1);
-		addch('|');
-	}
+	init_color(COLOR_YELLOW, 150,650,400);
+	init_color(COLOR_GREEN, 200,400,250);
+	init_color(COLOR_BLACK, 100,200,150);
 }
