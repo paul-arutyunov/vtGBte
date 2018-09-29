@@ -1,5 +1,7 @@
 # vtGBte (Very Tiny GameBoy Tile Editor)
 
+![](./screen.png)
+
 A simple *keyboard-controlled* Game Boy tile editor for Unix systems written in C using ncurses library. 
 Hope you'll find it useful. 
 
