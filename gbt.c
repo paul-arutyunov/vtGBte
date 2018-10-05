@@ -14,6 +14,7 @@ unsigned char asset[256][16];
 int h,w;
 
 void initColors();
+void updateCanvas(int tile);
 
 int main()
 {
@@ -25,9 +26,11 @@ int main()
 	int i;
 	int j;
 	int l;
+	int maxcol, maxrow;
+	int gstartx, gstarty;
 	extern int h, w;
 	unsigned char b1,b2;
-	int current_tile=0;
+	unsigned int current_tile=0;
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
@@ -54,7 +57,9 @@ int main()
 	
 	while(1)
 	{
+		getmaxyx(stdscr, maxrow, maxcol);
 		displayCanvas();
+		current_tile=current_tile%256;
 		
 		for (i = 0; i < 4; i++) /* Display color panel */
 		{
@@ -69,6 +74,10 @@ int main()
 			 mvaddch(2,10+i*4,' ');
 			}
 		}
+
+
+		move(h+6,9);
+		printw("#%d     ",current_tile+1);
 
 		/* Display hex data */
 		for (i = 0; i < h; i++)
@@ -85,8 +94,8 @@ int main()
 				}
 				move(5+i,14+w*2+l*8);
 				printw("%.2X, %.2X",b1,b2);
-				/*asset[current_tile][i] = b1;
-				asset[current_tile][i]= b2;*/
+				asset[current_tile+(h/8*l)][i*2] = b1;
+				asset[current_tile+(h/8*l)][i*2+1] = b2;
 			}
 		}
 		
@@ -102,6 +111,10 @@ int main()
 
 		switch (k)	/* Input */
 		{
+			case 'u':
+			 updateCanvas(current_tile);
+			 break;
+
 			case KEY_UP:
 			 y--;
 			 break;
@@ -130,6 +143,16 @@ int main()
 			case 'h':	/* Help */
 			 clear();
 			 print_help();
+			 break;
+
+			case ',':
+			 /*if (current_tile>0) */current_tile-=(h/8)*(w/8);
+			 updateCanvas(current_tile);
+			 break;
+
+			case '.':
+			 /*if (current_tile<255)*/ current_tile+=(h/8)*(w/8);
+			 updateCanvas(current_tile);
 			 break;
 
 			case 'f':	/* Fill the whole tile with one
@@ -170,8 +193,9 @@ int main()
 
 			case 'S':
 			 move(h+7,9);
-			 attron(COLOR_PAIR(2));
-			 printw("Height: %d, Width: %d - use arrow keys to change\n         Press Shift-S when finished",h,w);
+			 attron(COLOR_PAIR(1));
+			 move(h+8,9);
+			 printw("Press Shift-S again to end");
 			 curs_set(1);
 
 			 while ((k=getch())!='S') {
@@ -180,15 +204,16 @@ int main()
 				if (k==KEY_RIGHT) w+=8;
 				if (k==KEY_LEFT && w>8) w-=8;
 				clear();
+				draw_boxes();
+				displayCanvas();
 			 	move(h+7,9);
-			 	attron(COLOR_PAIR(2));
-			 	printw("Height: %d, Width: %d - use arrow keys to change",h,w);
+			 	attron(COLOR_PAIR(1));
+			 	printw("%d, %d - use arrows to change",h,w);
 			 	attron(COLOR_PAIR(4));
 			 	move(h+8,9);
 			 	attron(COLOR_PAIR(2));
 			 	printw("Press Shift+S again when finished");
-				draw_boxes();
-				displayCanvas();
+				refresh();
 			 }
 
 			 curs_set(0);
@@ -218,4 +243,36 @@ void initColors()
 	init_color(COLOR_YELLOW, 150,650,400);
 	init_color(COLOR_GREEN, 200,400,250);
 	init_color(COLOR_BLACK, 100,200,150);
+}
+
+void updateCanvas(int tile)
+{
+	extern unsigned char drawing_space[MAXH][MAXW];
+	extern unsigned char asset[256][16];
+	extern int h,w;
+	
+	int c;
+	int i,j,l;
+	int b1,b2;
+
+	tile = tile % 256;
+
+	for (i=0; i<h; i++)
+	{
+		for (l=0; l<w/8; l++)
+		{
+			for (j=0; j<8; j++)
+			{
+				c = 0;
+	
+				b1=asset[tile+(h/8*(l))][i*2];
+				b2=asset[tile+(h/8*(l))][i*2+1];
+	
+				c = c | (((b1<<j) & 0x80) >> 6);
+				c = c | (((b2<<j) & 0x80) >> 7);
+	
+				drawing_space[i][j+l*8] = c;
+			}
+		}
+	}
 }
