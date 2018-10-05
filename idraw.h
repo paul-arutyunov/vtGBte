@@ -9,3 +9,4 @@ void textbox(int, int, int, int);
 
 void draw_boxes();
 
+void displayCanvas();
