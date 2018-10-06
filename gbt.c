@@ -7,6 +7,7 @@
 #include <ncurses.h>
 #include "def.h"
 #include "idraw.h"
+#include "file.h"
 #include "str.h"
 
 unsigned char drawing_space[MAXH][MAXW];
@@ -184,11 +185,21 @@ int main()
 			  display_guide = 0;
 			 break;
 
-			case '\n':
+			case 's':
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
 			 get_input_line(command);
+			 if (initFile(command)==SUCCESS) saveAsset();
+			break;
+
+			case 'l':
+			 move(h+7,9);
+			 attron(COLOR_PAIR(4));
+			 printw("> ");
+			 get_input_line(command);
+			 if (initFile(command)==SUCCESS) loadAsset();
+			 updateCanvas(current_tile);
 			break;
 
 			case 'S':
