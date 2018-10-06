@@ -37,3 +37,37 @@ Also it'd be nice to have a script named, say, "rebuild.sh" located in the repo 
 *And `rm`.*
 *And, if thruth to be told, a C compiler is required too.*
 *Why am I writing this.*
+
+## Usage
+
+Asset is always 256 tiles in size.
+vtGBte saves assets in raw binary format. This means that you only have to 
+save your work to a file, named, say, 'sprites.bin', you will only need to 
+include it in your assembly file, for example, that's how you do it in RGBDS: 
+`incbin "sprites.bin"`
+You would likely do not use up the whole asset, so you can include only a part of file:
+`incbin "sprites.bin",0,32`
+In RGBDS, this will include only 32 bytes (2 tiles) starting at byte 0. 
+Minimalistic!
+
+## Commands
+
+Drawing:
+Arrow keys to move the cursor, number keys (1..4) to select color, SPACE to plot a pixel, 
+F to fill the whole tile with selected color. 
+
+R to redraw screen (similar to ^R in Nethack) - useful if your screen is ruined for any reason. 
+
+Shift-S to resize canvas (up to 32x32 size supported)
+
+G - show guide
+
+, and . keys to shift tile
+
+S to save asset to file
+L to load asset from file
+
+## So...
+
+Be sure to make suggestions or contribute. 
+You're welcome!
