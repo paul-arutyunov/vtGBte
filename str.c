@@ -11,18 +11,25 @@ void get_input_line(char *string)
 	int j = 0;
 
 	curs_set(1);
+	move(h+7,11);
+	printw("                          ");
+	move(h+7,11);
 	while ((c = getch()) != '\n')
 	{
-		if (c == '\b' && i>=0) {
-			string[i]='\0';
-			i--;
+		move(h+7,11+i);
+		if (c == KEY_BACKSPACE) {
+			if (i>0) {
+				i--;
+				mvaddch(h+7,11+i,' ');
+				move(h+7,11+i);
+				string[i]='\0';
+			}
 		} else {
 			string[i] = c;
+			mvaddch(h+7,11+i,c);
 			i++;
 		}
-		move(h+7,11);
 		string[i+1] = '\0';
-		while (string[j]!='\0') addch(string[j++]);
 	}
 
 	string[i]='\0';
