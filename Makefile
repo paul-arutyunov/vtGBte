@@ -20,7 +20,7 @@ gbt.o: gbt.c
 str.o: str.c
 	$(COMPILER) -c -o str.o str.c -lncurses
 
-gbt: gbt.o var.o str.o idrawing.o file.o
+gbt: gbt.o str.o idrawing.o file.o
 	$(COMPILER) -o gbt gbt.o idrawing.o str.o file.o -lncurses
 
 clean:
