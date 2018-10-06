@@ -11,15 +11,17 @@ all: gbt
 idrawing.o: idraw.c
 	$(COMPILER) -c -o idrawing.o idraw.c -lncurses
 
+file.o: file.c
+	$(COMPILER) -c -o file.o file.c -lncurses
+
 gbt.o: gbt.c
 	$(COMPILER) -c -o gbt.o gbt.c -lncurses
-
 
 str.o: str.c
 	$(COMPILER) -c -o str.o str.c -lncurses
 
-gbt: gbt.o var.o str.o idrawing.o
-	$(COMPILER) -o gbt gbt.o idrawing.o str.o -lncurses
+gbt: gbt.o var.o str.o idrawing.o file.o
+	$(COMPILER) -o gbt gbt.o idrawing.o str.o file.o -lncurses
 
 clean:
 	rm -rf gbt *.o
