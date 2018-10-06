@@ -3,6 +3,7 @@
 
 #define MAXH	32
 #define MAXW	32
-
+#define FAILURE	1
+#define SUCCESS	0
 
 #endif
