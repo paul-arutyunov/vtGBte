@@ -1,5 +1,6 @@
 # Put your compiler name here 
-COMPILER = gcc
+CC = gcc
+CFLAGS = -I$(CURDIR)
 
 PREFIX = "/usr/local"
                    # By default
@@ -8,20 +9,20 @@ PREFIX = "/usr/local"
 
 all: gbt
 
-idrawing.o: idraw.c
-	$(COMPILER) -c -o idrawing.o idraw.c -lncurses
+draw.o: src/draw.c
+	$(CC) $(CFLAGS) -c -o draw.o src/draw.c -lncurses
 
-file.o: file.c
-	$(COMPILER) -c -o file.o file.c -lncurses
+file.o: src/file.c
+	$(CC) $(CFLAGS) -c -o file.o src/file.c -lncurses
 
-gbt.o: gbt.c
-	$(COMPILER) -c -o gbt.o gbt.c -lncurses
+main.o: src/main.c
+	$(CC) $(CFLAGS) -c -o  main.o src/main.c -lncurses
 
-str.o: str.c
-	$(COMPILER) -c -o str.o str.c -lncurses
+str.o: src/str.c
+	$(CC) $(CFLAGS) -c -o str.o src/str.c -lncurses
 
-gbt: gbt.o str.o idrawing.o file.o
-	$(COMPILER) -o gbt gbt.o idrawing.o str.o file.o -lncurses
+gbt: main.o str.o draw.o file.o
+	$(CC) $(CFLAGS) -o gbt main.o draw.o str.o file.o -lncurses
 
 clean:
 	rm -rf gbt *.o
