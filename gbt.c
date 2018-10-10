@@ -45,6 +45,12 @@ int main()
 		printf("\nTerminating :(\n");
 		return 1;
 	}
+	if (can_change_color() == FALSE) {
+		printw("Hey!\nYour terminal seems to do not \nsupport color re-definitions.\n");
+		printw("As this program uses neat custom palette,\n you might experience eye bleeding.\n");
+		printw("Press any key to continue.");
+		getch();
+	}
 	noecho();
 	start_color();
 	keypad(stdscr, 1);
@@ -246,7 +252,10 @@ int main()
 
 void initColors()
 {
-	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+	if (init_pair(1, COLOR_BLACK, COLOR_WHITE)==ERR) {
+		printw("Woops...");
+		getch();
+	} 
 	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
 	init_pair(3, COLOR_WHITE, COLOR_GREEN);
 	init_pair(4, COLOR_WHITE, COLOR_BLACK);
