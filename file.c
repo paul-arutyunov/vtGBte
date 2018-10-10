@@ -12,6 +12,8 @@ int initFile(char *filename)
 		printw("Opened file '%s'",filename);
 		return SUCCESS;	
 	} else {
+	/*	fp = fopen(filename,"wb
+		printw("Created file '%s'",filename);*/
 		printw("Can't open file '%s'",filename);
 		return FAILURE;
 	}
