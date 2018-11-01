@@ -17,7 +17,7 @@ int h,w;
 void initColors();
 void updateCanvas(int tile);
 
-int main()
+int main(int argc, char *argv[])
 {
 	extern unsigned char drawing_space[MAXH][MAXW];
 	extern char command[];
@@ -35,8 +35,10 @@ int main()
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
+	char *filename;
 	h = 8;
 	w = 8;
+
 
 	initscr();
 	if (has_colors() == FALSE) {
@@ -62,6 +64,13 @@ int main()
 
 	draw_boxes();
 	
+	if (argc>=2) {
+		filename = argv[1];
+		if (initFile(filename)==SUCCESS) loadAsset();
+		updateCanvas(current_tile);
+	}
+
+
 	while(1)
 	{
 		getmaxyx(stdscr, maxrow, maxcol);
