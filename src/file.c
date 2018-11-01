@@ -30,7 +30,7 @@ int initFile(char *filename)
 		}
 		if (c=='n')
 		{
-			printw("\r        Oki.                 ");
+			printw("\r         Oki.                          ");
 			return FAILURE;
 		}
 	}
