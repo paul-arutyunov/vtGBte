@@ -204,16 +204,16 @@ int main(int argc, char *argv[])
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
-			 get_input_line(command);
-			 if (initFile(command)==SUCCESS) saveAsset();
+			 get_input_line(filename);
+			 if (initFile(filename)==SUCCESS) saveAsset();
 			break;
 
 			case 'l':
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
-			 get_input_line(command);
-			 if (initFile(command)==SUCCESS) loadAsset();
+			 get_input_line(filename);
+			 if (initFile(filename)==SUCCESS) loadAsset();
 			 updateCanvas(current_tile);
 			break;
 
