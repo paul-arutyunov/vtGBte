@@ -14,6 +14,7 @@ void get_input_line(char *string)
 	move(h+7,11);
 	printw("                          ");
 	move(h+7,11);
+	for (i=0; i<strlen(string); i++) mvaddch(h+7,11+i,string[i]);
 	while ((c = getch()) != '\n')
 	{
 		move(h+7,11+i);
