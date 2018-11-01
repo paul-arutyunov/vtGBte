@@ -8,8 +8,8 @@ Hope you'll find it useful.
 ## Building
 
 First you'll need to clone the repo:
-`git clone https://github.com/paul-arutyunov/vtGBte.git`
-`cd vtGBte`
+`$ git clone https://github.com/paul-arutyunov/vtGBte.git`
+`$ cd vtGBte`
 
 To build the project, run
 `$ make`
@@ -18,12 +18,12 @@ in your terminal.
 This will create binary file in the repo dir.
 
 To install the program, simply run
-`$ make install`
+`# make install`
 
 This will install the binary to the directory specified in the makefile (`/usr/local/bin` by default).
 
 Expectably, to uninstall run
-`$ make uninstall`
+`# make uninstall`
 
 Before re-building always run
 `$ make clean`
