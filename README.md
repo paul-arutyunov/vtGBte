@@ -74,6 +74,10 @@ F to fill the whole tile with selected color.
 
 `l` to load asset from file
 
+`h` to open the help screen
+
+`q` to quit
+
 ## So...
 
 Be sure to make suggestions or contribute. 
