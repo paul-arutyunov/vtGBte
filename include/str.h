@@ -9,7 +9,7 @@
 
 extern int h,w;
 
-void get_input_line(char *);
+void get_input_line(char *string, int len);
 
 char *get_token(char *str, int* prev);
 
