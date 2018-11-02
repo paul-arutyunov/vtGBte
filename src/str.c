@@ -1,7 +1,5 @@
 #include "include/str.h"
 
-/* Had to wrote token parsing code myself. Standard strtok() is unsafe */
-
 char command[20];
 
 void get_input_line(char *string)
@@ -14,7 +12,10 @@ void get_input_line(char *string)
 	move(h+7,11);
 	printw("                          ");
 	move(h+7,11);
-	for (i=0; i<strlen(string); i++) mvaddch(h+7,11+i,string[i]);
+
+	if (strlen(string)>0) {
+		for (i=0; i<strlen(string); i++) mvaddch(h+7,11+i,string[i]);
+	}
 	while ((c = getch()) != '\n')
 	{
 		move(h+7,11+i);
