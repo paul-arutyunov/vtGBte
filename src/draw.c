@@ -7,9 +7,10 @@ int display_guide;
 
 void print_help()
 {
+	int c=0;
 	attron(COLOR_PAIR(4));
 	printw("\n\n\n");
-	printw("         +-------- Help Message -----+\n");
+	printw("         +--1/2--- Help Message -----+\n");
 	printw("         | Here's the list of cmds:  |\n");
 	printw("         |                           |\n");
 	printw("         | 1...4    = pick color     |\n");
@@ -21,8 +22,23 @@ void print_help()
 	printw("         | q        = quit           |\n");
 	printw("         +--press space to continue--+\n");
 
+	while (getch())!=' ');
+	clear();
 
-	while (getch() != ' ') ;
+	printw("\n\n\n");
+	printw("         +--2/2--- Help Message -----+\n");
+	printw("         | Here's the list of cmds:  |\n");
+	printw("         |                           |\n");
+	printw("         | u        = update display |\n");
+	printw("         | , .      = choose tile    |\n");
+	printw("         | l        = load from file |\n");
+	printw("         | s        = save to file   |\n");
+	printw("         | S        = resize tiles   |\n");
+	printw("         |                           |\n");
+	printw("         |                           |\n");
+	printw("         +--press space to continue--+\n");
+
+	while(getch()!=' ');
 	clear();
 	draw_boxes();
 }
@@ -43,7 +59,7 @@ void textbox(int startx, int starty, int w, int h)
 		addch(ACS_HLINE);
 		move(starty+h+1,startx+i);
 		addch(ACS_HLINE);
-	
+
 	}
 	mvaddch(starty,startx+w+1, /*ACS_URCORNER*/'+');
 	mvaddch(starty+h+1,startx+w+1, /*ACS_LRCORNER*/'+');
