@@ -5,5 +5,6 @@
 #define MAXW	32
 #define FAILURE	1
 #define SUCCESS	0
+#define STRING_LENGTH 64
 
 #endif

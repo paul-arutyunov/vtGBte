@@ -35,10 +35,20 @@ int main(int argc, char *argv[])
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
-	char *filename;
+	char filename[STRING_LENGTH+1]={0};
+		/*changed from pointer to a fixed string because
+		the pointer didn't point to any allocated memory
+		which should cause segfault
+		*/
 	h = 8;
 	w = 8;
 
+	if (argc>2){
+		printf("Too many arguments, dude! \n");
+		printf("Press any key to quit...");
+		getchar();
+		return 2;
+	}
 
 	initscr();
 	if (has_colors() == FALSE) {
@@ -63,20 +73,19 @@ int main(int argc, char *argv[])
 	color = 3;
 
 	draw_boxes();
-	
-	if (argc>=2) {
-		filename = argv[1];
+
+	if (argc==2) {
+		strncpy(filename,argv[1],STRING_LENGTH);
 		if (initFile(filename)==SUCCESS) loadAsset();
 		updateCanvas(current_tile);
 	}
-
 
 	while(1)
 	{
 		getmaxyx(stdscr, maxrow, maxcol);
 		displayCanvas();
 		current_tile=current_tile%256;
-		
+
 		for (i = 0; i < 4; i++) /* Display color panel */
 		{
 			attron(COLOR_PAIR(i+1)); 
@@ -201,20 +210,20 @@ int main(int argc, char *argv[])
 			 break;
 
 			case 's':
-			 if (filename==NULL) filename = command;
+			 //if (filename==NULL) filename = command;
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
-			 get_input_line(filename);
+			 get_input_line(filename,STRING_LENGTH);
 			 if (initFile(filename)==SUCCESS) saveAsset();
 			break;
 
 			case 'l':
-			 if (filename==NULL) filename = command;
+			 //if (filename==NULL) filename = command;
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
-			 get_input_line(filename);
+			 get_input_line(filename,STRING_LENGTH);
 			 if (initFile(filename)==SUCCESS) loadAsset();
 			 updateCanvas(current_tile);
 			break;

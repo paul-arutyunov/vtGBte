@@ -1,8 +1,8 @@
 #include "include/str.h"
 
-char command[20];
+//char command[20];
 
-void get_input_line(char *string)
+void get_input_line(char *string, int len)
 {
 	int c;
 	int i = 0;
@@ -16,26 +16,21 @@ void get_input_line(char *string)
 	if (strlen(string)>0) {
 		for (i=0; i<strlen(string); i++) mvaddch(h+7,11+i,string[i]);
 	}
-	while ((c = getch()) != '\n')
+	while ((c = getch()) != '\n' && c != EOF)
 	{
 		move(h+7,11+i);
-		if (c == KEY_BACKSPACE) {
-			if (i>0) {
-				i--;
-				mvaddch(h+7,11+i,' ');
-				move(h+7,11+i);
-				string[i]='\0';
-			}
-		} else {
+		if (c == KEY_BACKSPACE && i>0) {
+			i--;
+			mvaddch(h+7,11+i,' ');
+			move(h+7,11+i);
+			string[i]='\0';
+		}
+		else if( !iscntrl(c) && strlen(string) < len) {
 			string[i] = c;
 			mvaddch(h+7,11+i,c);
-			i++;
+			string[++i] = '\0';
 		}
-		string[i+1] = '\0';
 	}
-
-	string[i]='\0';
-
 	curs_set(0);
 }
 
