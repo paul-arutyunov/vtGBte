@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 
 
 		move(h+6,9);
-		printw("#%d     ",current_tile+1);
+		printw("#%d     ",current_tile);
 
 		/* Display hex data */
 		for (i = 0; i < h; i++)
