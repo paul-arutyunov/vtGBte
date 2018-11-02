@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
 			 break;
 
 			case 's':
-			 //if (filename==NULL) filename = command;
+
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
 			break;
 
 			case 'l':
-			 //if (filename==NULL) filename = command;
+
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("> ");

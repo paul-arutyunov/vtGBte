@@ -1,7 +1,5 @@
 #include "include/str.h"
 
-//char command[20];
-
 void get_input_line(char *string, int len)
 {
 	int c;
