@@ -62,17 +62,17 @@ Drawing:
 Arrow keys to move the cursor, number keys (1..4) to select color, SPACE to plot a pixel, 
 F to fill the whole tile with selected color. 
 
-R to redraw screen (similar to ^R in Nethack) - useful if your screen is ruined for any reason. 
+`r` to redraw screen (similar to ^R in Nethack) - useful if your screen is ruined for any reason. 
 
-Shift-S to resize canvas (up to 32x32 size supported)
+`S` to resize canvas (up to 32x32 size supported)
 
-G - show guide
+`g` - show guide
 
-, and . keys to shift tile
+`,` and `.` keys to shift tile
 
-S to save asset to file
+`s` to save asset to file
 
-L to load asset from file
+`l` to load asset from file
 
 ## So...
 
