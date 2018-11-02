@@ -11,15 +11,15 @@ void print_help()
 	printw("\n\n\n");
 	printw("         +-------- Help Message -----+\n");
 	printw("         | Here's the list of cmds:  |\n");
-        printw("         |                           |\n");
-        printw("         | 1...4    = pick color     |\n");
-        printw("         | ARROWS   = move cursor    |\n");
-        printw("         | SPACE    = draw           |\n");
-        printw("         | r        = redraw screen  |\n");
+	printw("         |                           |\n");
+	printw("         | 1...4    = pick color     |\n");
+	printw("         | ARROWS   = move cursor    |\n");
+	printw("         | SPACE    = draw           |\n");
+	printw("         | r        = redraw screen  |\n");
 	printw("         | f        = fill with color|\n");
-        printw("         | h        = get some help  |\n");
-        printw("         | q        = quit           |\n");
-        printw("         +--press space to continue--+\n");
+	printw("         | h        = get some help  |\n");
+	printw("         | q        = quit           |\n");
+	printw("         +--press space to continue--+\n");
 
 
 	while (getch() != ' ') ;
