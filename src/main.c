@@ -3,6 +3,7 @@
 */
 
 
+#include <stdint.h>
 #include <stdio.h>
 #include <ncurses.h>
 #include "include/def.h"
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
 	int gstartx, gstarty;
 	extern int h, w;
 	unsigned char b1,b2;
-	unsigned int current_tile=0;
+	uint8_t current_tile=0;
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
@@ -84,11 +85,10 @@ int main(int argc, char *argv[])
 	{
 		getmaxyx(stdscr, maxrow, maxcol);
 		displayCanvas();
-		current_tile=current_tile%256;
 
 		for (i = 0; i < 4; i++) /* Display color panel */
 		{
-			attron(COLOR_PAIR(i+1)); 
+			attron(COLOR_PAIR(i+1));
 			move(3,10+i*4);
 			printw("%d",i);
 			if (i == color) {
@@ -123,11 +123,11 @@ int main(int argc, char *argv[])
 				asset[current_tile+(h/8*l)][i*2+1] = b2;
 			}
 		}
-		
+
 		x = x%w;
 		y = y%h;
 		move(5+y,10+x*2);
-		
+
 		/*Change color to prevent the cursor
 		 * from hiding the pixel underneath */
 		attron(COLOR_PAIR(drawing_space[y][x]+1));
@@ -171,18 +171,18 @@ int main(int argc, char *argv[])
 			 break;
 
 			case ',':
-			 /*if (current_tile>0) */current_tile-=(h/8)*(w/8);
+			 current_tile-=(h/8)*(w/8);
 			 updateCanvas(current_tile);
 			 break;
 
 			case '.':
-			 /*if (current_tile<255)*/ current_tile+=(h/8)*(w/8);
+			 current_tile+=(h/8)*(w/8);
 			 updateCanvas(current_tile);
 			 break;
 
 			case 'f':	/* Fill the whole tile with one
 					   color (NOT flood fill)*/
-			 for (i = 0; i<h; i++) for (j = 0; j<w; j++) 
+			 for (i = 0; i<h; i++) for (j = 0; j<w; j++)
 						drawing_space[i][j] = color;
 			 break;
 
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 			 attron(COLOR_PAIR(1));
 			 move(h+7,9);
 			 printw("Do you really want to quit? Y/N ");
-			
+
 			 if (getch() == 'y') {
 			  endwin();
 			  return 0;
@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
 			 draw_boxes();
 			 break;
 
-			default: 
+			default:
 			 if (k >= '1' && k <= '4')
 			  color = k-'1';
 			 break;
@@ -275,7 +275,7 @@ void initColors()
 	if (init_pair(1, COLOR_BLACK, COLOR_WHITE)==ERR) {
 		printw("Woops...");
 		getch();
-	} 
+	}
 	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
 	init_pair(3, COLOR_WHITE, COLOR_GREEN);
 	init_pair(4, COLOR_WHITE, COLOR_BLACK);
@@ -290,7 +290,7 @@ void updateCanvas(int tile)
 	extern unsigned char drawing_space[MAXH][MAXW];
 	extern unsigned char asset[256][16];
 	extern int h,w;
-	
+
 	int c;
 	int i,j,l;
 	int b1,b2;
@@ -304,13 +304,13 @@ void updateCanvas(int tile)
 			for (j=0; j<8; j++)
 			{
 				c = 0;
-	
+
 				b1=asset[tile+(h/8*(l))][i*2];
 				b2=asset[tile+(h/8*(l))][i*2+1];
-	
+
 				c = c | (((b1<<j) & 0x80) >> 6);
 				c = c | (((b2<<j) & 0x80) >> 7);
-	
+
 				drawing_space[i][j+l*8] = c;
 			}
 		}
