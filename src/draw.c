@@ -22,7 +22,7 @@ void print_help()
 	printw("         | q        = quit           |\n");
 	printw("         +--press space to continue--+\n");
 
-	while (getch())!=' ');
+	while (getch()!=' ');
 	clear();
 
 	printw("\n\n\n");
