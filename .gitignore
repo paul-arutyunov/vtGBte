@@ -1,3 +1,11 @@
 # list of files to ignore
+# usually just the binaries and objs
+# they are annoying when popping up in git status
+# I hate red
+# (maybe)
+
+# Object files
 *.o
 *.a
+
+gbt # The binary file
