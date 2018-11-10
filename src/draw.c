@@ -34,7 +34,7 @@ void print_help()
 	printw("         | l        = load from file |\n");
 	printw("         | s        = save to file   |\n");
 	printw("         | S        = resize tiles   |\n");
-	printw("         |                           |\n");
+	printw("         | c p      = copy, paste    |\n");
 	printw("         |                           |\n");
 	printw("         +--press space to continue--+\n");
 
