@@ -121,8 +121,8 @@ int main(int argc, char *argv[])
 				}
 				move(5+i,14+w*2+l*8);
 				printw("%.2X, %.2X",b1,b2);
-				asset[current_tile+(h/8*l)][i*2] = b2;
-				asset[current_tile+(h/8*l)][i*2+1] = b1;
+				asset[current_tile+(h/8*l)][i*2+1] = b2;
+				asset[current_tile+(h/8*l)][i*2] = b1;
 			}
 		}
 
@@ -333,8 +333,8 @@ void updateCanvas(int tile)
 			{
 				c = 0;
 
-				b2=asset[tile+(h/8*(l))][i*2];
-				b1=asset[tile+(h/8*(l))][i*2+1];
+				b1=asset[tile+(h/8*(l))][i*2];
+				b2=asset[tile+(h/8*(l))][i*2+1];
 
 				c = c | (((b1<<j) & 0x80) >> 6);
 				c = c | (((b2<<j) & 0x80) >> 7);
