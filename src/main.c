@@ -116,8 +116,10 @@ int main(int argc, char *argv[])
 				for (j = 0; j < 8; j++)
 				{
 					a = drawing_space[i][j+l*8];
-					b1 = b1 | ( (a>>1) << (7-j) );
-					b2 = b2 | ( (a&1) << (7-j) );
+					/*b1 = b1 | ( (a>>1) << (7-j) );
+					b2 = b2 | ( (a&1) << (7-j) );*/
+					b1 = b1 | (a&1) << (7-j);
+					b2 = b2 | (a>>1) << (7-j);
 				}
 				move(5+i,14+w*2+l*8);
 				printw("%.2X, %.2X",b1,b2);
@@ -336,8 +338,8 @@ void updateCanvas(int tile)
 				b1=asset[tile+(h/8*(l))][i*2];
 				b2=asset[tile+(h/8*(l))][i*2+1];
 
-				c = c | (((b1<<j) & 0x80) >> 6);
-				c = c | (((b2<<j) & 0x80) >> 7);
+				c = c | (((b1<<j) & 0x80) >> 7);
+				c = c | (((b2<<j) & 0x80) >> 6);
 
 				drawing_space[i][j+l*8] = c;
 			}
