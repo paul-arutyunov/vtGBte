@@ -12,6 +12,7 @@
 #include "include/str.h"
 
 unsigned char drawing_space[MAXH][MAXW];
+unsigned char clipboard[MAXH][MAXW];
 unsigned char asset[256][16];
 int h,w;
 
@@ -21,6 +22,7 @@ void updateCanvas(int tile);
 int main(int argc, char *argv[])
 {
 	extern unsigned char drawing_space[MAXH][MAXW];
+	extern unsigned char clipboard[MAXH][MAXW];
 	extern char command[];
 	int k;
 	int color;
@@ -208,6 +210,32 @@ int main(int argc, char *argv[])
 			 else
 			  display_guide = 0;
 			 break;
+
+			case 'c':
+			 for (i=0; i<h; i++)
+			 {
+				 for (j=0; j<w; j++)
+				 {
+					 clipboard[i][j] = drawing_space[i][j];
+				 }
+			 }
+			 move(h+7,9);
+			 attron(COLOR_PAIR(4));
+			 printw("Copied %d tile(s)",(h/8)*(w/8));
+			break;
+
+			case 'p':
+			 for (i=0; i<h; i++)
+			 {
+				 for (j=0; j<w; j++)
+				 {
+					 drawing_space[i][j] = clipboard[i][j];
+				 }
+			 }
+			 move(h+7,9);
+			 attron(COLOR_PAIR(4));
+			 printw("Pasted %d tile(s)",(h/8)*(w/8));
+			break;
 
 			case 's':
 
