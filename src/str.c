@@ -35,7 +35,8 @@ void get_input_line(char *string, int len)
 
 char *get_token(char *str, int *prev)
 {
-	char token[32];
+	static char token[32];
+	memset(token, '\0', 31);
 
 	int i = 0;
 
