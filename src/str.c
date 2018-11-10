@@ -35,11 +35,11 @@ void get_input_line(char *string, int len)
 
 char *get_token(char *str, int *prev)
 {
-	char *token;
+	char token[32];
 
 	int i = 0;
 
-	while (str[i] != ' ' || str[i] != '\0') {
+	while (str[i] != ' ' && str[i] != '\0') {
 		token[i] = str[*prev+i];
 		i++;
 	}
