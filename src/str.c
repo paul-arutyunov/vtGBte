@@ -1,14 +1,23 @@
 #include "include/str.h"
 
+void clear_line()
+{
+	attron(COLOR_PAIR(4));
+	move(h+7, 11);
+	printw("                          ");
+}
+
 void get_input_line(char *string, int len)
 {
 	int c;
 	int i = 0;
 	int j = 0;
+	int width = 0;
+	int height = 0;
 
+	getmaxyx(stdscr, height, width);
 	curs_set(1);
-	move(h+7,11);
-	printw("                          ");
+	clear_line();
 	move(h+7,11);
 
 	if (strlen(string)>0) {

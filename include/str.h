@@ -9,6 +9,8 @@
 
 extern int h,w;
 
+void clear_line();
+
 void get_input_line(char *string, int len);
 
 char *get_token(char *str, int* prev);
