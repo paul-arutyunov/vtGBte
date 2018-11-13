@@ -1,4 +1,5 @@
 #include "include/file.h"
+#include "include/str.h"
 
 FILE *fp;
 
@@ -21,16 +22,19 @@ int initFile(char *filename)
 			fp = fopen(filename,"wb+");
 
 			if (fp==NULL) {
-				printw("\r         Can't create file '%s'          ",filename);
+				clear_line();
+				printw("\r         Can't create file '%s'",filename);
 				return FAILURE;
 			} else {
-				printw("\r         Created file '%s'               ",filename);
+				clear_line();
+				printw("\r         Created file '%s'",filename);
 				return SUCCESS;
 			}
 		}
 		if (c=='n')
 		{
-			printw("\r         Oki.                          ");
+			clear_line();
+			printw("\r         Oki.");
 			return FAILURE;
 		}
 	}
