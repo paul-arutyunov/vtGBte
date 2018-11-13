@@ -221,6 +221,7 @@ int main(int argc, char *argv[])
 					 clipboard[i][j] = drawing_space[i][j];
 				 }
 			 }
+			 clear_line();
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("Copied %d tile(s)",(h/8)*(w/8));
@@ -234,6 +235,7 @@ int main(int argc, char *argv[])
 					 drawing_space[i][j] = clipboard[i][j];
 				 }
 			 }
+			 clear_line();
 			 move(h+7,9);
 			 attron(COLOR_PAIR(4));
 			 printw("Pasted %d tile(s)",(h/8)*(w/8));
