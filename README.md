@@ -3,7 +3,10 @@
 ![](./screen.png)
 
 A simple *keyboard-controlled* Game Boy tile editor for Unix systems written in C using ncurses library. 
-Hope you'll find it useful. 
+(Everything besides plotting pixels is achieved by pressing keys)
+
+
+Hope you'll find it useful.
 
 ## Building
 
