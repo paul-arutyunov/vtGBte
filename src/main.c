@@ -34,10 +34,12 @@ int main(int argc, char *argv[])
 	int gstartx, gstarty;
 	extern int h, w;
 	unsigned char b1,b2;
+	MEVENT event;
 	uint8_t current_tile=0;
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
+	int plotting=0;
 	char filename[STRING_LENGTH+1]={0};
 		/*changed from pointer to a fixed string because
 		the pointer didn't point to any allocated memory
@@ -70,8 +72,12 @@ int main(int argc, char *argv[])
 	start_color();
 	keypad(stdscr, 1);
 	curs_set(0);
+	cbreak();
 	initColors();
-	display_guide=0;
+	display_guide=0;	/* don't */
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+	printf("\033[?1003h\n");
+	mouseinterval(0);
 
 	color = 3;
 
@@ -142,6 +148,29 @@ int main(int argc, char *argv[])
 		{
 			case 'u':
 			 updateCanvas(current_tile);
+			 break;
+
+			case KEY_MOUSE:
+			 if (getmouse(&event)==OK)
+			 {
+				x = (event.x-10) >> 1;
+				y = (event.y-5);
+
+				y=y%h;
+				x=x%w;
+				
+				if (event.bstate & BUTTON1_PRESSED)
+				 plotting=1;
+
+				if (event.bstate & BUTTON1_RELEASED) 
+				 plotting=0;
+
+				if (plotting) drawing_space[y][x] = color;
+				
+				/*move(h+7,9);
+				printw("x: %d, y: %d        ", x,y);*/
+			 }
+
 			 break;
 
 			case KEY_UP:
