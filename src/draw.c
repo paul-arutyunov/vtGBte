@@ -90,12 +90,13 @@ void displayCanvas()
 {
 	int i,j;
 	extern int h,w;
+	extern int assign[];
 	extern unsigned char drawing_space[MAXH][MAXW];
 	for (i = 0; i < h; i++)
 		{
 			for (j = 0; j < w; j++)	/* Display canvas */
 			{
-				attron(COLOR_PAIR(drawing_space[i][j]+1));
+				attron(COLOR_PAIR(assign[drawing_space[i][j]]+1));
 				move(5+i,10+j*2);
 
 				if (display_guide) {
