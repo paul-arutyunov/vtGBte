@@ -73,6 +73,8 @@ F to fill the whole tile with selected color.
 
 `,` and `.` keys to shift tile
 
+`<` and `>` keys to toggle the color of the selected color number
+
 `c` to copy, `p` to paste
 
 `s` to save asset to file
