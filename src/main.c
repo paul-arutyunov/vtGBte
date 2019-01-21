@@ -14,6 +14,8 @@
 unsigned char drawing_space[MAXH][MAXW];
 unsigned char clipboard[MAXH][MAXW];
 unsigned char asset[256][16];
+int assign[] = {0, 1, 2, 3};
+
 int h,w;
 
 void initColors();
@@ -39,6 +41,7 @@ int main(int argc, char *argv[])
 	unsigned char a = 0;
 	unsigned int x = 0;
 	unsigned int y = 0;
+	extern int assign[];
 	int plotting=0;
 	char filename[STRING_LENGTH+1]={0};
 		/*changed from pointer to a fixed string because
@@ -96,7 +99,7 @@ int main(int argc, char *argv[])
 
 		for (i = 0; i < 4; i++) /* Display color panel */
 		{
-			attron(COLOR_PAIR(i+1));
+			attron(COLOR_PAIR(assign[i]+1));
 			move(3,10+i*4);
 			printw("%d",i);
 			if (i == color) {
@@ -140,7 +143,7 @@ int main(int argc, char *argv[])
 
 		/*Change color to prevent the cursor
 		 * from hiding the pixel underneath */
-		attron(COLOR_PAIR(drawing_space[y][x]+1));
+		attron(COLOR_PAIR(assign[drawing_space[y][x]]+1));
 		printw("[]");
 		k = getch();
 
@@ -211,6 +214,15 @@ int main(int argc, char *argv[])
 			case '.':
 			 current_tile+=(h/8)*(w/8);
 			 updateCanvas(current_tile);
+			 break;
+
+			case '<':
+			 if (assign[color]==0) assign[color]=3;
+			 else assign[color] -= 1;
+			 break;
+
+			case '>':
+			 assign[color] = (assign[color]+1) % 4;
 			 break;
 
 			case 'f':	/* Fill the whole tile with one
