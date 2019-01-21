@@ -3,8 +3,8 @@
 void clear_line()
 {
 	attron(COLOR_PAIR(4));
-	move(h+7, 11);
-	printw("                          ");
+	move(h+7, 9);
+	printw("                                    ");
 }
 
 void get_input_line(char *string, int len)
