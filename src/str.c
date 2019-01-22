@@ -2,9 +2,11 @@
 
 void clear_line()
 {
+	extern int maxcol;
+	int i;
 	attron(COLOR_PAIR(4));
 	move(h+7, 9);
-	printw("                                    ");
+	for (i=0; i<(maxcol-1); i++) addch(' ');
 }
 
 void get_input_line(char *string, int len)
