@@ -14,7 +14,7 @@
 unsigned char drawing_space[MAXH][MAXW];
 unsigned char clipboard[MAXH][MAXW];
 unsigned char asset[256][16];
-int assign[] = {0, 1, 2, 3};
+int assign[] = {0, 1, 2, 3}; /* Assign pallette */
 
 int h,w;
 
@@ -315,6 +315,7 @@ int main(int argc, char *argv[])
 				if (k==KEY_LEFT && w>8) w-=8;
 				clear();
 				draw_boxes();
+				updateCanvas(current_tile);
 				displayCanvas();
 			 	move(h+7,9);
 			 	attron(COLOR_PAIR(1));
