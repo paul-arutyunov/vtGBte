@@ -17,6 +17,7 @@ unsigned char asset[256][16];
 int assign[] = {0, 1, 2, 3}; /* Assign pallette */
 
 int h,w;
+int maxcol, maxrow;
 
 void initColors();
 void updateCanvas(int tile);
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 	int i;
 	int j;
 	int l;
-	int maxcol, maxrow;
+	extern int maxcol, maxrow;
 	int gstartx, gstarty;
 	extern int h, w;
 	unsigned char b1,b2;
