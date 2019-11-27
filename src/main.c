@@ -240,6 +240,7 @@ int main(int argc, char *argv[])
 
 			 if (getch() == 'y') {
 			  endwin();
+			  printf("\033[?1003l\n");
 			  return 0;
 			 } else {
 			  curs_set(0);
