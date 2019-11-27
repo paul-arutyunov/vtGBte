@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 		printw("Press any key to continue.");
 		getch();
 	}
+
 	noecho();
 	start_color();
 	keypad(stdscr, 1);
@@ -343,6 +344,7 @@ int main(int argc, char *argv[])
 	}
 
 	endwin();
+	printf("\033[?1003l\n");
 	return 0;
 }
 
