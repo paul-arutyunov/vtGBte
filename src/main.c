@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <signal.h>
 #include <ncurses.h>
 #include "include/def.h"
 #include "include/draw.h"
@@ -21,6 +22,12 @@ int maxcol, maxrow;
 
 void initColors();
 void updateCanvas(int tile);
+
+void signalHandler(int signum) {
+	endwin();
+	printf("\033[?1003l\n");
+	exit(signum);
+}
 
 int main(int argc, char *argv[])
 {
@@ -72,6 +79,7 @@ int main(int argc, char *argv[])
 		printw("Press any key to continue.");
 		getch();
 	}
+
 	noecho();
 	start_color();
 	keypad(stdscr, 1);
@@ -82,6 +90,8 @@ int main(int argc, char *argv[])
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 	printf("\033[?1003h\n");
 	mouseinterval(0);
+
+	signal(SIGINT, signalHandler);
 
 	color = 3;
 
@@ -240,6 +250,7 @@ int main(int argc, char *argv[])
 
 			 if (getch() == 'y') {
 			  endwin();
+			  printf("\033[?1003l\n");
 			  return 0;
 			 } else {
 			  curs_set(0);
@@ -342,6 +353,7 @@ int main(int argc, char *argv[])
 	}
 
 	endwin();
+	printf("\033[?1003l\n");
 	return 0;
 }
 
