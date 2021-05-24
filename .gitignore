@@ -8,4 +8,5 @@
 *.o
 *.a
 
-gbt # The binary file
+# The binary file
+gbt 

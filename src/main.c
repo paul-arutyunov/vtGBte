@@ -17,6 +17,8 @@ unsigned char clipboard[MAXH][MAXW];
 unsigned char asset[256][16];
 int assign[] = {0, 1, 2, 3}; /* Assign pallette */
 
+#define esc 27
+
 int h,w;
 int maxcol, maxrow;
 
@@ -58,6 +60,7 @@ int main(int argc, char *argv[])
 		*/
 	h = 8;
 	w = 8;
+  set_escdelay(0);
 
 	if (argc>2){
 		printf("Too many arguments, dude! \n");
@@ -148,14 +151,16 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		x = x%w;
-		y = y%h;
-		move(5+y,10+x*2);
+    if (x < w && y < h && x >= 0 && y >= 0) {
+      x = x%w;
+      y = y%h;
+      move(5+y,10+x*2);
 
-		/*Change color to prevent the cursor
-		 * from hiding the pixel underneath */
-		attron(COLOR_PAIR(assign[drawing_space[y][x]]+1));
-		printw("[]");
+      /*Change color to prevent the cursor
+       * from hiding the pixel underneath */
+      attron(COLOR_PAIR(assign[drawing_space[y][x]]+1));
+      printw("[]");
+    }
 		k = getch();
 
 		switch (k)	/* Input */
@@ -169,18 +174,19 @@ int main(int argc, char *argv[])
 			 {
 				x = (event.x-10) >> 1;
 				y = (event.y-5);
+        if (y >= h || x >= w) break;
 
 				y=y%h;
 				x=x%w;
-				
+
 				if (event.bstate & BUTTON1_PRESSED)
 				 plotting=1;
 
-				if (event.bstate & BUTTON1_RELEASED) 
+				if (event.bstate & BUTTON1_RELEASED)
 				 plotting=0;
 
 				if (plotting) drawing_space[y][x] = color;
-				
+
 				/*move(h+7,9);
 				printw("x: %d, y: %d        ", x,y);*/
 			 }
@@ -242,6 +248,7 @@ int main(int argc, char *argv[])
 						drawing_space[i][j] = color;
 			 break;
 
+      case esc:
 			case 'q':
 			 curs_set(1);
 			 attron(COLOR_PAIR(1));
@@ -320,7 +327,8 @@ int main(int argc, char *argv[])
 			 printw("Press Shift-S again to end");
 			 curs_set(1);
 
-			 while ((k=getch())!='S') {
+       k = getch();
+			 while (k != 'S' && k != esc) {
 				if (k==KEY_DOWN) h+=8;
 				if (k==KEY_UP && h>8) h-=8;
 				if (k==KEY_RIGHT) w+=8;
@@ -337,6 +345,7 @@ int main(int argc, char *argv[])
 			 	attron(COLOR_PAIR(2));
 			 	printw("Press Shift+S again when finished");
 				refresh();
+        k = getch();
 			 }
 
 			 curs_set(0);
